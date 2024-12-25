@@ -1,6 +1,12 @@
+tags
+*.bak
+.classpath
+.project
+.settings/
+README.md.*
+
 target/
 build
-out
 .gradle
 pom.xml.tag
 pom.xml.releaseBackup
@@ -12,7 +18,6 @@ buildNumber.properties
 .mvn/timing.properties
 .idea
 *.iml
-.DS_Store
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
