@@ -33,13 +33,22 @@ public class PostBookSteps {
     // Scenario 2: Add a book with invalid credentials
     @Given("I have invalid username and password")
     public void i_have_invalid_username_and_password() {
-        // This step doesn't need to do anything specific because the credentials are handled in the API call itself.
-        // We're simulating the invalid username and password scenario.
     }
 
     @When("I add a book with id {int} title {string} and author {string} using invalid credentials")
     public void i_add_a_book_with_id_title_and_author_using_invalid_credentials(Integer id, String title, String author) {
-        // Send POST request with invalid credentials
         response = postBookAPI.addBookWithInvalidCredentials(id, title, author);
+    }
+
+    // Scenario 3: Add a book with missing author field
+    @When("I add a book with title {string} and no author")
+    public void iAddABookWithTitleAndNoAuthor(String title) {
+        response = postBookAPI.addBookWithoutAuthor(title);
+    }
+
+    @Then("the response should contain error {string}")
+    public void theResponseShouldContainError(String errorMessage) {
+        String responseBody = response.getBody().asString();
+        assertThat(responseBody).contains(errorMessage);
     }
 }

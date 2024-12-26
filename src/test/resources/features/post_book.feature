@@ -9,3 +9,8 @@ Feature: Add a Book in the Library
     Given I have invalid username and password
     When I add a book with id 5 title "The Book Anonymous" and author "The Author Anonymous" using invalid credentials
     Then the response status code should be 401
+
+  Scenario: Add a book with missing author field
+    When I add a book with title "The Book Without Author" and no author
+    Then the response status code should be 400
+    And the response should contain error "Author is required"

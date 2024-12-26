@@ -35,12 +35,25 @@ public class PostBookAPI {
                 .extract().response();
     }
 
-    // Method to add a book with invalid credentials
+    // Add a book with invalid credentials
     public Response addBookWithInvalidCredentials(Integer id, String title, String author) {
         String endpoint = "/api/books";
         String requestBody = "{ \"id\": " + id + ", \"title\": \"" + title + "\", \"author\": \"" + author + "\" }";
 
-        return createRequestSpec("invalidUser", "wrongPassword")  // Invalid credentials
+        return createRequestSpec("UserUnknow", "Pa$$word")  // Invalid credentials
+                .body(requestBody)
+                .when()
+                .post(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
+
+    // Add a book without the author field
+    public Response addBookWithoutAuthor(String title) {
+        String endpoint = "/api/books";
+        String requestBody = "{\"title\": \"" + title + "\" }";
+
+        return createRequestSpec("admin", "password")
                 .body(requestBody)
                 .when()
                 .post(BASE_URL + endpoint)
