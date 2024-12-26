@@ -51,4 +51,11 @@ public class PostBookSteps {
         String responseBody = response.getBody().asString();
         assertThat(responseBody).contains(errorMessage);
     }
+
+    // Scenario 3: Add a book with existing data
+    @Given("the library already contains a book with title {string} and author {string}")
+    public void theLibraryAlreadyContainsABookWithTitleAndAuthor(String title, String author) {
+        response = postBookAPI.addBook(title, author);
+        assertThat(response.getStatusCode()).isEqualTo(201); // Ensure the book was added
+    }
 }

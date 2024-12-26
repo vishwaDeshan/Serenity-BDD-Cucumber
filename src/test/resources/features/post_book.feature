@@ -14,3 +14,9 @@ Feature: Add a Book in the Library
     When I add a book with title "The Book Without Author" and no author
     Then the response status code should be 400
     And the response should contain error "Author is required"
+
+  Scenario: Add a book with existing data
+    Given the library already contains a book with title "Existing Book" and author "Existing Author"
+    When I add a book with title "Existing Book" and author "Existing Author"
+    Then the response status code should be 409
+    And the response should contain error "Book Already Exists"
