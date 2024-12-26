@@ -34,4 +34,17 @@ public class PostBookAPI {
                 .then()
                 .extract().response();
     }
+
+    // Method to add a book with invalid credentials
+    public Response addBookWithInvalidCredentials(Integer id, String title, String author) {
+        String endpoint = "/api/books";
+        String requestBody = "{ \"id\": " + id + ", \"title\": \"" + title + "\", \"author\": \"" + author + "\" }";
+
+        return createRequestSpec("invalidUser", "wrongPassword")  // Invalid credentials
+                .body(requestBody)
+                .when()
+                .post(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
 }
