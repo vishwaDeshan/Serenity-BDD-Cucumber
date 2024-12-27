@@ -60,9 +60,6 @@ public class GetBookAPI {
                 .then()
                 .extract().response();
     }
-}
-
-
     // Method to get all books without authorization
     public Response getAllBooksWithoutAuthorization() {
         String endpoint = "/api/books";
@@ -84,4 +81,8 @@ public class GetBookAPI {
                 .then()
                 .extract().response();
     }
+}
+
+
+
 

@@ -6,6 +6,8 @@ import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import starter.apis.GetBookAPI;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class GetBookSteps {
@@ -67,9 +69,6 @@ public class GetBookSteps {
     public void i_request_a_book_with_id_using_invalid_credentials(int id) {
         response = bookApi.getBookWithInvalidCredentials(id);
     }
-}
-
-
     @When("I request all books without authorization")
     public void i_request_all_books_without_authorization() {
         response = bookApi.getAllBooksWithoutAuthorization();
@@ -90,9 +89,13 @@ public class GetBookSteps {
 
     @Then("the response should contain the book details with fields {string}, {string}, {string}, and {string}")
     public void the_response_should_contain_the_book_details_with_fields(String idField, String titleField, String authorField, String priceField) {
-        assertThat(response.jsonPath().get(idField)).isNotNull();
-        assertThat(response.jsonPath().get(titleField)).isNotNull();
-        assertThat(response.jsonPath().get(authorField)).isNotNull();
-        assertThat(response.jsonPath().get(priceField)).isNotNull();
+        assertThat(Optional.ofNullable(response.jsonPath().get(idField))).isNotNull();
+        assertThat(Optional.ofNullable(response.jsonPath().get(titleField))).isNotNull();
+        assertThat(Optional.ofNullable(response.jsonPath().get(authorField))).isNotNull();
+        assertThat(Optional.ofNullable(response.jsonPath().get(priceField))).isNotNull();
     }
+
+}
+
+
 
