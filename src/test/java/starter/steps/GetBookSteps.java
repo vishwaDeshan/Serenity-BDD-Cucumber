@@ -68,3 +68,31 @@ public class GetBookSteps {
         response = bookApi.getBookWithInvalidCredentials(id);
     }
 }
+
+
+    @When("I request all books without authorization")
+    public void i_request_all_books_without_authorization() {
+        response = bookApi.getAllBooksWithoutAuthorization();
+    }
+
+
+    @Given("I have user credentials")
+    public void i_have_user_credentials() {
+        // No additional setup required here as user credentials are handled in the API call
+    }
+
+    @When("I request all books using user credentials")
+    public void i_request_all_books_using_user_credentials() {
+        response = bookApi.getBooksWithUserRole();
+    }
+
+
+
+    @Then("the response should contain the book details with fields {string}, {string}, {string}, and {string}")
+    public void the_response_should_contain_the_book_details_with_fields(String idField, String titleField, String authorField, String priceField) {
+        assertThat(response.jsonPath().get(idField)).isNotNull();
+        assertThat(response.jsonPath().get(titleField)).isNotNull();
+        assertThat(response.jsonPath().get(authorField)).isNotNull();
+        assertThat(response.jsonPath().get(priceField)).isNotNull();
+    }
+

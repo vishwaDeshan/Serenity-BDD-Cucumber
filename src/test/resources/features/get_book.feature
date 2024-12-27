@@ -25,3 +25,23 @@ Feature: Get Book Details from the Library
     When I request a book with id 1 using invalid credentials
     Then the response code should be 401
     And the response should contain an error message "Unauthorized"
+
+
+  Scenario: Get all books without providing authorization
+    When I request all books without authorization
+    Then the response code should be 401
+    And the response should contain an error message "Unauthorized"
+
+
+  Scenario: Get books with forbidden access (user role)
+    Given I have user credentials
+    When I request all books using user credentials
+    Then the response code should be 403
+    And the response should contain an error message "Forbidden"
+
+
+
+  Scenario: Validate response structure of book details
+    When I request a book with id 1
+    Then the response code should be number 200
+    And the response should contain the book details with fields "id", "title", "author", and "price"
