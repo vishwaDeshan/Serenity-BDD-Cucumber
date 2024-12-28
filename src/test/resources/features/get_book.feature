@@ -45,3 +45,9 @@ Feature: Get Book Details from the Library
     When I request a book with id 1
     Then the response code should be number 200
     And the response should contain the book details with fields "id", "title", "author", and "price"
+
+  Scenario: Fetch a book with an invalid string ID
+    Given I have valid user credentials
+    When I request a book with the ID "abc"
+    Then the response code should be 400
+    And the response should contain an error message "Bad Request: Invalid ID"

@@ -95,6 +95,22 @@ public class GetBookSteps {
         assertThat(Optional.ofNullable(response.jsonPath().get(priceField))).isNotNull();
     }
 
+
+    @When("I request a book with an invalid string id {string}")
+    public void i_request_a_book_with_an_invalid_string_id(String id) {
+        response = bookApi.getBookByInvalidStringId(id);
+    }
+
+    @Then("the response code should be {int} for invalid string book id")
+    public void the_response_code_should_be_for_invalid_string_book_id(int statusCode) {
+        assertThat(response.statusCode()).isEqualTo(statusCode);
+    }
+
+    @Then("the response should contain an error message for invalid string id {string}")
+    public void the_response_should_contain_an_error_message_for_invalid_string_id(String expectedMessage) {
+        assertThat(response.jsonPath().getString("errorMessage")).isEqualTo(expectedMessage);
+    }
+
 }
 
 
