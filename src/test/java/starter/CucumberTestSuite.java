@@ -11,4 +11,5 @@ import net.serenitybdd.cucumber.CucumberWithSerenity;
 		plugin = {"pretty", "html:target/cucumber-report.html"}
 )
 public class CucumberTestSuite {
+
 }
