@@ -60,4 +60,39 @@ public class GetBookAPI {
                 .then()
                 .extract().response();
     }
+    // Method to get all books without authorization
+    public Response getAllBooksWithoutAuthorization() {
+        String endpoint = "/api/books";
+        return given()
+                .contentType(ContentType.JSON)
+                .when()
+                .get(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
+
+
+    // Method to get books with forbidden access
+    public Response getBooksWithUserRole() {
+        String endpoint = "/api/books";
+        return createRequestSpec("user", "password")
+                .when()
+                .get(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
+
+    // Method to get a book by invalid string ID
+    public Response getBookByInvalidStringId(String id) {
+        String endpoint = "/api/books/" + id;
+        return createRequestSpec("admin", "password")
+                .when()
+                .get(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
 }
+
+
+
+
