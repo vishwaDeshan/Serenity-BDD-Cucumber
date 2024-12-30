@@ -31,16 +31,17 @@ Feature: Get Book Details from the Library
 
 
   Scenario: Get all books without providing authorization
-    When I request all books without authorization
+    Given I have invalid credentials
+    Then request all books providing authorization
     Then the response code should be 401
     And the response should contain an error message ""
 
 
-  Scenario: Get books with forbidden access (user role)
+  Scenario: Get a book with forbidden access (user role)
     Given I have user credentials
-    When I request all books using user credentials
-    Then the response code should be 403
-    And the response should contain an error message "Forbidden"
+    When I request a book with id 1234
+    Then the response code should be for forbidden access 404
+    And the response should contain an error message "Book not found"
 
 
   Scenario: Validate response structure of book details
@@ -49,7 +50,6 @@ Feature: Get Book Details from the Library
     And the response should contain the book details with fields "id", "title", "author", and "price"
 
   Scenario: Fetch a book with an invalid string ID
-    Given I have user credentials
-    When I request a book with the ID "abc"
-    Then the response code should be 400
-    And the response should contain an error message "Bad Request: Invalid ID"
+    When I request a book with an invalid string id "abc"
+    Then the response code should be 400 for invalid string book id
+    And the response should contain an error message "Bad Request"

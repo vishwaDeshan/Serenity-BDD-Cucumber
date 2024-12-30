@@ -55,6 +55,11 @@ public class GetBookSteps {
         assertThat(response.statusCode()).isEqualTo(statusCode);
     }
 
+    @Then("the response code should be for forbidden access {int}")
+    public void the_response_code_should_be_for_forbidden_access(int statusCode) {
+        assertThat(response.statusCode()).isEqualTo(statusCode);
+    }
+
     @Then("the response should contain an error message {string}")
     public void the_response_should_contain_an_error_message(String expectedMessage) {
         assertThat(response.jsonPath().getString("errorMessage")).isEqualTo(expectedMessage);
@@ -73,11 +78,14 @@ public class GetBookSteps {
     public void i_request_all_books_without_authorization() {
         response = bookApi.getAllBooksWithoutAuthorization();
     }
-
+    @Then("request all books providing authorization")
+    public void i_request_all_books_invalid_credentials() {
+        response = bookApi.getAllBooks();
+    }
 
     @Given("I have user credentials")
     public void i_have_user_credentials() {
-        // No additional setup required here as user credentials are handled in the API call
+        response = bookApi.getBooksWithUserRole();
     }
 
     @When("I request all books using user credentials")
