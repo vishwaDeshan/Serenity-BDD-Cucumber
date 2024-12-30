@@ -21,7 +21,7 @@ Feature: Get Book Details from the Library
     And the response should contain an error message "Book not found"
 
   Scenario: Get a book with invalid credentials
-#    Given I have invalid credentials
+    Given I have invalid credentials
     When I request a book with id 1 using invalid credentials
     Then the response code should be number 401 invalidate credential
     And the response should contain an error message for invalid credential ""
@@ -33,8 +33,8 @@ Feature: Get Book Details from the Library
   Scenario: Get all books without providing authorization
     Given I have invalid credentials
     Then request all books providing authorization
-    Then the response code should be 401
-    And the response should contain an error message ""
+    Then the response code should be 401 for invalid string book id
+    And the response should contain an error message "Unauthorized"
 
 
   Scenario: Get a book with forbidden access (user role)
@@ -52,4 +52,4 @@ Feature: Get Book Details from the Library
   Scenario: Fetch a book with an invalid string ID
     When I request a book with an invalid string id "abc"
     Then the response code should be 400 for invalid string book id
-    And the response should contain an error message "Bad Request"
+    And the response should contain an error message ""

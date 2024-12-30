@@ -67,10 +67,10 @@ public class GetBookSteps {
 
     }
 
-//    @Given("I have invalid credentials")
-//    public void i_have_invalid_credentials() {
-//        // No additional setup required here as invalid credentials are handled in the API call
-//    }
+    @Given("I have invalid credentials")
+    public void i_have_invalid_credentials() {
+        response = bookApi.getAllBooksByInvalidCredential();
+    }
 
     @When("I request a book with id {int} using invalid credentials")
     public void i_request_a_book_with_id_using_invalid_credentials(int id) {

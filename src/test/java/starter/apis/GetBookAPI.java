@@ -41,6 +41,15 @@ public class GetBookAPI {
                 .extract().response();
     }
 
+    public Response getAllBooksByInvalidCredential() {
+        String endpoint = "/api/books";
+        return createRequestSpec("invalidUser", "wrongPassword")
+                .when()
+                .get(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
+
     // Method to get a book by invalid ID
     public Response getBookByInvalidId(int id) {
         String endpoint = "/api/books/" + id;
