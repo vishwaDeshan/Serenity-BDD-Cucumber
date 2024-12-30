@@ -20,3 +20,8 @@ Feature: Add a Book in the Library
     When I add a book with title "Existing Book" and author "Existing Author"
     Then the response status code should be 409
     And the response should contain error "Book Already Exists"
+
+  Scenario: Add a book with null id and empty title and author
+    When I add a book with id null, empty title "", and empty author ""
+    Then the response status code should be 400
+    And the response should contain error "Title and Author are required"

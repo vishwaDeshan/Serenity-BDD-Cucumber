@@ -60,4 +60,18 @@ public class PostBookAPI {
                 .then()
                 .extract().response();
     }
+
+    // Add a book with null id and empty fields
+    public Response addBookWithNullIdAndEmptyFields(String title, String author) {
+        String endpoint = "/api/books";
+        String requestBody = "{ \"id\": null, \"title\": \"" + title + "\", \"author\": \"" + author + "\" }";
+
+        return createRequestSpec("admin", "password")
+                .body(requestBody)
+                .when()
+                .post(BASE_URL + endpoint)
+                .then()
+                .extract().response();
+    }
+
 }

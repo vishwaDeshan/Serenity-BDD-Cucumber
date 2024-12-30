@@ -58,4 +58,11 @@ public class PostBookSteps {
         response = postBookAPI.addBook(title, author);
         assertThat(response.getStatusCode()).isEqualTo(201); // Ensure the book was added
     }
+
+    // Scenario 5: Add a book with null id and empty title and author
+    @When("I add a book with id null, empty title {string}, and empty author {string}")
+    public void iAddABookWithNullIdAndEmptyTitleAndAuthor(String title, String author) {
+        response = postBookAPI.addBookWithNullIdAndEmptyFields(title, author);
+    }
+
 }
