@@ -34,6 +34,7 @@ public class GetBookSteps {
     public void the_response_should_contain_an_empty_list_of_books() {
         assertThat(response.jsonPath().getList("books")).isEmpty();
     }
+    
 
     @When("I request a book with id {int}")
     public void i_request_a_book_with_id(int id) {
@@ -62,18 +63,20 @@ public class GetBookSteps {
 
     @Then("the response should contain an error message {string}")
     public void the_response_should_contain_an_error_message(String expectedMessage) {
-        assertThat(response.jsonPath().getString("errorMessage")).isEqualTo(expectedMessage);
+        assertThat(response.getBody().asString()).isEqualTo(expectedMessage);
+
     }
 
-    @Given("I have invalid credentials")
-    public void i_have_invalid_credentials() {
-        // No additional setup required here as invalid credentials are handled in the API call
-    }
+//    @Given("I have invalid credentials")
+//    public void i_have_invalid_credentials() {
+//        // No additional setup required here as invalid credentials are handled in the API call
+//    }
 
     @When("I request a book with id {int} using invalid credentials")
     public void i_request_a_book_with_id_using_invalid_credentials(int id) {
         response = bookApi.getBookWithInvalidCredentials(id);
     }
+  
     @When("I request all books without authorization")
     public void i_request_all_books_without_authorization() {
         response = bookApi.getAllBooksWithoutAuthorization();
@@ -119,6 +122,16 @@ public class GetBookSteps {
         assertThat(response.jsonPath().getString("errorMessage")).isEqualTo(expectedMessage);
     }
 
+
+    @Then("the response code should be number {int} invalidate credential")
+    public void the_response_should_contain_an_error_code_invalid_credit(int statusCode) {
+        assertThat(response.statusCode()).isEqualTo(statusCode);
+    }
+
+    @Then("the response should contain an error message for invalid credential {string}")
+    public void the_response_should_contain_an_error_message_invalid_credit(String expectedMessage) {
+        assertThat(response.getBody().asString()).isEqualTo(expectedMessage);
+    }
 }
 
 
