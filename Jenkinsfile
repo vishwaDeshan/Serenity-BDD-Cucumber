@@ -1,11 +1,11 @@
 pipeline {
     agent any
-    // tools {
-    //     maven 'Maven'
-    //     jdk 'Java 17'
-    // }
+    tools {
+        maven 'Maven'
+        jdk 'Java 17'
+    }
     stages {
-        stage('Hello') {
+        stage('build') {
             steps {
                 echo 'Hello World'
             }
