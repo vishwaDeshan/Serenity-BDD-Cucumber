@@ -9,14 +9,14 @@ pipeline {
             steps {
                 script {
                     def jarFile = 'demo-0.0.1-SNAPSHOT.jar'
-                    sh "java -jar ${jarFile}"
+                    bat "java -jar ${jarFile}"
                 }
             }
         }
         stage('Test') {
             steps {
                 
-                sh 'mvn clean verify'
+                bat 'mvn clean verify'
             }
         }
     }
