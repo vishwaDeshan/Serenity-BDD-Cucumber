@@ -15,7 +15,6 @@ pipeline {
         // }
         stage('Test') {
             steps {
-                sh 'mvn -version'
                 sh 'mvn clean verify'
             }
         }
