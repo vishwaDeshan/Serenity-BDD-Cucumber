@@ -5,19 +5,17 @@ pipeline {
         jdk 'Java 17'
     }
     stages {
-        stage('build') {
+        stage('Build') {
             steps {
-                echo 'Hello World'
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '83eac14f-4484-44c7-8131-cec343c3af19', url: 'https://github.com/chandulakavishka/Group-20_Serenity.git']])
-                sh 'mvn -B -Dmaven.test.failure.ignore=true clean'
-                post {
-                    always {
-                        junit(
-                            allowEmptyResults: true,
-                            testResults: 'target/surefire-reports/*.xml'
-                        )
-                    }
+                script {
+                    def jarFile = 'demo-0.0.1-SNAPSHOT.jar'
+                    sh "java -jar ${jarFile}"
                 }
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn clean verify'
             }
         }
     }
