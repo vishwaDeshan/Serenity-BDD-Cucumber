@@ -15,6 +15,7 @@ pipeline {
         // }
         stage('Test') {
             steps {
+                dir('/D:/Project/Group-20_Serenity') {
                 sh 'mvn clean verify'
             }
         }
