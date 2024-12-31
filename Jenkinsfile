@@ -5,6 +5,13 @@ pipeline {
         jdk 'Java 17'
     }
     stages {
+        stage('SCM Checkout') {
+            steps {
+                retry(3) {
+                    git branch: 'main', url: 'https://github.com/chandulakavishka/Group-20_Serenity.git'
+                }
+            }
+        }
         // stage('Build') {
         //     steps {
         //         script {
