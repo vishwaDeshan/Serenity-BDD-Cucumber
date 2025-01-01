@@ -5,7 +5,6 @@ import starter.apis.GetBookAPI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class main {
     private static GetBookAPI bookApi = new GetBookAPI();
