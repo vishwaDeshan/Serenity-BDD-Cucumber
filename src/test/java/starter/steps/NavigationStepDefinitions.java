@@ -11,8 +11,8 @@ public class NavigationStepDefinitions {
     NavigationSteps navigationSteps;
 
     @Given("I am on the home page")
-    public void iAmOnTheHomePage() {
-        navigationSteps.openHomePage();
+    public void iAmOnTheHomePageNavigation() {
+        navigationSteps.openHomePageWithNavigation();
     }
 
     @When("I navigate to the Offers Page")

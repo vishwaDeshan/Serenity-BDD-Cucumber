@@ -7,7 +7,7 @@ import pageObjects.QuantityPage;
 public class QuantitySteps extends UIInteractionSteps {
 
     @Step("Navigate to the Home Page")
-    public void openHomePage() {
+    public void openHomePageWithQuantity() {
         openUrl("https://rahulshettyacademy.com/seleniumPractise/#/");
     }
 

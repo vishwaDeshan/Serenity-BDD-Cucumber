@@ -1,4 +1,4 @@
-Feature: Offer Page Pagination
+Feature: Offer Page Pagination Functionality
   Verify the pagination works as expected.
 
   Scenario: Verify the pagination buttons are working

@@ -10,9 +10,9 @@ public class QuantityStepDefinitions {
 
     QuantitySteps quantitySteps;
 
-    @Given("I am on the home page")
-    public void iAmOnTheHomePage() {
-        quantitySteps.openHomePage();
+    @Given("I am on the home page to check quantity")
+    public void iAmOnTheHomePageQuantity() {
+        quantitySteps.openHomePageWithQuantity();
     }
 
     @When("I click the increment button")

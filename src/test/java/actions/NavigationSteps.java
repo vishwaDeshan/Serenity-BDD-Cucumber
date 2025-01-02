@@ -12,7 +12,7 @@ import java.util.List;
 public class NavigationSteps extends UIInteractionSteps {
 
     @Step("Navigate to the Home Page")
-    public void openHomePage() {
+    public void openHomePageWithNavigation() {
         openUrl("https://rahulshettyacademy.com/seleniumPractise/#/");
         withTimeoutOf(Duration.ofSeconds(10)).waitFor(visibilityOfElementLocated(NavigationPage.HOME_PAGE_LOGO));
     }
