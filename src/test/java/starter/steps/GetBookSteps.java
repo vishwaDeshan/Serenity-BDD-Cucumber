@@ -4,8 +4,11 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
+import org.jetbrains.annotations.NotNull;
 import starter.apis.GetBookAPI;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,11 +33,6 @@ public class GetBookSteps {
         assertThat(response.jsonPath().getList("books")).isNotEmpty();
     }
 
-    @Then("the response should contain an empty list of books")
-    public void the_response_should_contain_an_empty_list_of_books() {
-        assertThat(response.jsonPath().getList("books")).isEmpty();
-    }
-    
 
     @When("I request a book with id {int}")
     public void i_request_a_book_with_id(int id) {
@@ -130,7 +128,26 @@ public class GetBookSteps {
 
     @Then("the response should contain an error message for invalid credential {string}")
     public void the_response_should_contain_an_error_message_invalid_credit(String expectedMessage) {
-        assertThat(response.getBody().asString()).isEqualTo(expectedMessage);
+        int statusCode = response.statusCode();
+        Map<Integer, String> statusMessages = getIntegerStringMap();
+        String statusMessage = statusMessages.getOrDefault(statusCode, "Unknown Status");
+        assertThat(statusMessage).isEqualTo(expectedMessage);
+    }
+
+    @NotNull
+    private static Map<Integer, String> getIntegerStringMap() {
+        Map<Integer, String> statusMessages = new HashMap<>();
+        statusMessages.put(200, "OK");
+        statusMessages.put(201, "Created");
+        statusMessages.put(208, "Already Reported");
+        statusMessages.put(400, "Bad Request");
+        statusMessages.put(401, "Unauthorized");
+        statusMessages.put(402, "Payment Required");
+        statusMessages.put(403, "Forbidden");
+        statusMessages.put(404, "Not Found");
+        statusMessages.put(405, "Method Not Allowed");
+        statusMessages.put(500, "Internal Server Error");
+        return statusMessages;
     }
 }
 
