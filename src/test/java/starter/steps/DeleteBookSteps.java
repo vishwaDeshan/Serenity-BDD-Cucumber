@@ -42,5 +42,26 @@ public class DeleteBookSteps {
     public void the_response_code_should_be_for_unauthorized_deletion(int statusCode) {
         assertThat(response.statusCode()).isEqualTo(statusCode);
     }
+
+    @When("I try to delete the book with id {int} using case-sensitive admin credentials")
+    public void i_try_to_delete_the_book_with_case_sensitive_admin_credentials(int id) {
+        response = bookApi.deleteBookCaseSensitivityCheck(id);
+    }
+
+    @Then("the response code should be {int} for case-sensitive admin credentials")
+    public void the_response_code_should_be_for_case_sensitive_admin_credentials(int statusCode) {
+        assertThat(response.statusCode()).isEqualTo(statusCode);
+    }
+
+    @When("I try to delete the book with id {int} using case-sensitive user credentials")
+    public void i_try_to_delete_the_book_with_case_sensitive_user_credentials(int id) {
+        response = bookApi.deleteBookUnauthorizedUserCaseSensitivityCheck(id);
+    }
+
+    @Then("the response code should be {int} for case-sensitive user credentials")
+    public void the_response_code_should_be_for_case_sensitive_user_credentials(int statusCode) {
+        assertThat(response.statusCode()).isEqualTo(statusCode);
+    }
+
 }
 
