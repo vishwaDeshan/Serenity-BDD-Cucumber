@@ -18,4 +18,10 @@ Feature: Update a Book in the Library
     When I update the book with id 1 to title "New Title" and author ""
     Then the response code should be 400 for Bad Request
 
+  Scenario: Update a book with an empty title (Bug Scenario)
+    When I update the book with id 2 to title "" and author "New author"
+    Then the response code should be 400 for Bad Request
+
+
+
 
