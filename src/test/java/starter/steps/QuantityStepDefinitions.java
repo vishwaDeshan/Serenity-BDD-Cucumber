@@ -20,20 +20,20 @@ public class QuantityStepDefinitions {
         quantitySteps.clickIncrement();
     }
 
+    @Then("the quantity value should increase by 1")
+    public void theQuantityValueShouldIncreaseBy1() {
+        int currentQuantity = quantitySteps.getCurrentQuantity();
+        Assert.assertEquals("The quantity value should increase by 1.", 2, currentQuantity);
+    }
+
     @When("I click the decrement button")
     public void iClickTheDecrementButton() {
         quantitySteps.clickDecrement();
     }
 
-    @Then("the quantity value should increase by 1")
-    public void theQuantityValueShouldIncreaseBy1() {
-        Assert.assertEquals("The quantity value should increase by 1.",
-                quantitySteps.getCurrentQuantity(), 2);
-    }
-
     @Then("the quantity value should decrease by 1")
     public void theQuantityValueShouldDecreaseBy1() {
-        Assert.assertEquals("The quantity value should decrease by 1.",
-                quantitySteps.getCurrentQuantity(), 0);
+        int currentQuantity = quantitySteps.getCurrentQuantity();
+        Assert.assertEquals("The quantity value should decrease by 1.", 1, currentQuantity);
     }
 }
