@@ -19,13 +19,13 @@ pipeline {
         //     steps {
         //         script {
         //             def jarFile = 'demo-0.0.1-SNAPSHOT.jar'
-        //             bat "java -jar ${jarFile}"
+        //             sh "java -jar ${jarFile}"
         //         }
         //     }
         // }
         stage('Test') {
             steps {
-                bat 'mvn clean verify'
+                sh 'mvn clean verify'
             }
         }
     }
