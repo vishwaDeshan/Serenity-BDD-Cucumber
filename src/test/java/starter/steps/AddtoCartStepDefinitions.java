@@ -16,7 +16,6 @@ public class AddtoCartStepDefinitions {
         addToCartSteps.openProductsPage();
     }
 
-
     @When("I click the {string} button for {string}")
     public void iClickTheButtonForProduct(String buttonText, String productName) {
         if(buttonText.equalsIgnoreCase("Add to cart")) {
@@ -50,4 +49,3 @@ public class AddtoCartStepDefinitions {
         }
     }
 }
-
