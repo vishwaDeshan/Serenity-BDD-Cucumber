@@ -110,7 +110,7 @@ public class GetBookSteps {
 
 
     @Then("the response should contain the book details with fields {string}, {string} and {string}")
-    public void the_response_should_contain_the_book_details_with_fields(HttpResponse<String> response, String idField, String titleField, String authorField) {
+    public void the_response_should_contain_the_book_details_with_fields(String idField, String titleField, String authorField) {
         // Check that the specified fields are not null in the response
         String responseBody = response.body();
         assertThat(Optional.ofNullable(JsonPath.read(responseBody, "$." + idField))).isNotEmpty();
