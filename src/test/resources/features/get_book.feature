@@ -5,7 +5,7 @@ Feature: Get Book Details from the Library
     Then the response code should be number 200
     And the response should contain a list of books
 
-  Scenario: Get all books when the database is empty
+  Scenario: Get a book with user credentials
     Given I have user credentials
     When I request a book with id 1
     Then the response code should be number 200

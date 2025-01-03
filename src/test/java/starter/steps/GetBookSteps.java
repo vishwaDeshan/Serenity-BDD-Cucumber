@@ -61,7 +61,10 @@ public class GetBookSteps {
 
     @Then("the response should contain an error message {string}")
     public void the_response_should_contain_an_error_message(String expectedMessage) {
-        assertThat(response.getBody().asString()).isEqualTo(expectedMessage);
+        int statusCode = response.statusCode();
+        Map<Integer, String> statusMessages = getIntegerStringMap();
+        String statusMessage = statusMessages.getOrDefault(statusCode, "Unknown Status");
+        assertThat(statusMessage).isEqualTo(expectedMessage);
 
     }
 
