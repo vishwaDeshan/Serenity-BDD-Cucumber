@@ -1,45 +1,47 @@
 package starter.apis;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.Base64;
 
-import io.restassured.http.ContentType;
-import io.restassured.response.Response;
-import static io.restassured.RestAssured.given;
-
 public class UpdateBookAPI {
-
     private static final String BASE_URL = "http://localhost:7081";
+    private static final HttpClient client = HttpClient.newHttpClient();
 
     private String encodeCredentials(String username, String password) {
         String auth = username + ":" + password;
         return new String(Base64.getEncoder().encode(auth.getBytes()));
     }
-    public Response updateBook(int id, String title, String author) {
-        String endpoint = "/api/books/" + id;
+
+    public HttpResponse<String> updateBook(int id, String title, String author) throws Exception {
+        String endpoint = BASE_URL + "/api/books/" + id;
 
         String requestBody = "{ \"id\": " + id + ", \"title\": \"" + title + "\", \"author\": \"" + author + "\" }";
 
-        return given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))  // Add authorization header
-                .body(requestBody)
-                .when()
-                .put(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))
+                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 
-    public Response updateBookInvalidJason() {
-        String endpoint = "/api/books/1" ;
+    public HttpResponse<String> updateBookInvalidJson() throws Exception {
+        String endpoint = BASE_URL + "/api/books/1";
 
-        String invalidJson = "{ \"id\": 1, \"title\": \"Invalid Book Title\", \"author\": \"Author\" "; // Invalid JSON
+        String invalidJson = "{ \"id\": 1, \"title\": \"Invalid Book Title\", \"author\": \"Author\" ";
 
-        return given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))  // Add authorization header
-                .body(invalidJson)
-                .when()
-                .put(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(endpoint))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))
+                .PUT(HttpRequest.BodyPublishers.ofString(invalidJson))
+                .build();
+
+        return client.send(request, HttpResponse.BodyHandlers.ofString());
     }
 }
