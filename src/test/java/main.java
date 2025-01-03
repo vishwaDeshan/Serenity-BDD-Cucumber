@@ -1,50 +1,33 @@
-import io.restassured.response.Response;
+
+import com.jayway.jsonpath.JsonPath;
 import org.jetbrains.annotations.NotNull;
 import starter.apis.GetBookAPI;
 
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 public class main {
     private static GetBookAPI bookApi = new GetBookAPI();
-    private static Response response;
+    private static HttpResponse<String> response;
 
     public static void main(String[] args) {
         // Make API call
-        response = bookApi.getBookById(1);
-        Map<Integer, String> statusMessages = getIntegerStringMap();
-
-        int statusCode = response.statusCode();
-        String statusMessage = statusMessages.getOrDefault(statusCode, "Unknown Status");
-        System.out.println("Manually Decoded Status Message: " + statusMessage);
-        // Check the status code
-//        if (response.statusCode() == 401) { // Specifically handle 401 Unauthorized
-//            System.out.println("Unauthorized access!");
+            response = bookApi.getBookById(3);
+        String responseBody = response.body();
+        Object books = JsonPath.read(responseBody, "$.id");
+        String idField = "id";
+        System.out.println(assertThat(Optional.ofNullable(JsonPath.read(responseBody, "$." + idField))).isNotEmpty());
+//        response = bookApi.getBookById(1);
+//        Map<Integer, String> statusMessages = getIntegerStringMap();
 //
-//            try {
-//                // Attempt to extract the error message from the response JSON
-//                String errorMessage = response.jsonPath().getString("message"); // Adjust key as per API response
-//                System.out.println("Error Message: " + errorMessage);
-//            } catch (Exception e) {
-//                System.out.println("Error parsing unauthorized response: " + e.getMessage());
-//                System.out.println("Raw Response Body: " + response.getBody().asString());
-//            }
-//        } else if (response.statusCode() >= 400) { // Handle other errors
-//            System.out.println("Error occurred!");
-//
-//            try {
-//                String errorMessage = response.jsonPath().getString("message"); // Adjust key as needed
-//                System.out.println("Error Message: " + errorMessage);
-//            } catch (Exception e) {
-//                System.out.println("Error parsing response: " + e.getMessage());
-//                System.out.println("Raw Response Body: " + response.getBody().asString());
-//            }
-//        } else {
-//            // If successful
-//            System.out.println("Request was successful!");
-//            System.out.println("Response Body: " + response.getBody().asString());
-//        }
+//        int statusCode = response.statusCode();
+//        String statusMessage = statusMessages.getOrDefault(statusCode, "Unknown Status");
+//        System.out.println("Manually Decoded Status Message: " + statusMessage);
     }
 
     @NotNull

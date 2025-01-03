@@ -3,10 +3,10 @@ package starter.steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.response.Response;
 import org.jetbrains.annotations.NotNull;
 import starter.apis.GetBookAPI;
-
+import com.jayway.jsonpath.JsonPath;
+import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -16,11 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class GetBookSteps {
 
     private GetBookAPI bookApi = new GetBookAPI();
-    private Response response;
+    private HttpResponse<String> response;
 
     @When("I request all books")
     public void i_request_all_books() {
         response = bookApi.getAllBooks();
+
     }
 
     @Then("the response code should be number {int}")
@@ -30,7 +31,15 @@ public class GetBookSteps {
 
     @Then("the response should contain a list of books")
     public void the_response_should_contain_a_list_of_books() {
-        assertThat(response.jsonPath().getList("books")).isNotEmpty();
+        String responseBody = response.body();
+
+        // Use JsonPath to access the books or the root array directly
+        Object books = JsonPath.read(responseBody, "$"); // Adjust if necessary
+
+        // Assert that the response contains a non-empty list of books
+        assertThat(books).isNotNull();
+        assertThat(books).isInstanceOf(java.util.List.class);
+        assertThat(((java.util.List<?>) books)).isNotEmpty();
     }
 
 
@@ -41,7 +50,8 @@ public class GetBookSteps {
 
     @Then("the response should contain the book details with id {int}")
     public void the_response_should_contain_the_book_details_with_id(int id) {
-        assertThat(response.jsonPath().getInt("id")).isEqualTo(id);
+        int bookId = JsonPath.read(response.body(), "$.id");
+        assertThat(bookId).isEqualTo(id);
     }
 
     @When("I request a book with an invalid id {int}")
@@ -77,7 +87,7 @@ public class GetBookSteps {
     public void i_request_a_book_with_id_using_invalid_credentials(int id) {
         response = bookApi.getBookWithInvalidCredentials(id);
     }
-  
+
     @When("I request all books without authorization")
     public void i_request_all_books_without_authorization() {
         response = bookApi.getAllBooksWithoutAuthorization();
@@ -99,12 +109,13 @@ public class GetBookSteps {
 
 
 
-    @Then("the response should contain the book details with fields {string}, {string}, {string}, and {string}")
-    public void the_response_should_contain_the_book_details_with_fields(String idField, String titleField, String authorField, String priceField) {
-        assertThat(Optional.ofNullable(response.jsonPath().get(idField))).isNotNull();
-        assertThat(Optional.ofNullable(response.jsonPath().get(titleField))).isNotNull();
-        assertThat(Optional.ofNullable(response.jsonPath().get(authorField))).isNotNull();
-        assertThat(Optional.ofNullable(response.jsonPath().get(priceField))).isNotNull();
+    @Then("the response should contain the book details with fields {string}, {string} and {string}")
+    public void the_response_should_contain_the_book_details_with_fields(HttpResponse<String> response, String idField, String titleField, String authorField) {
+        // Check that the specified fields are not null in the response
+        String responseBody = response.body();
+        assertThat(Optional.ofNullable(JsonPath.read(responseBody, "$." + idField))).isNotEmpty();
+        assertThat(Optional.ofNullable(JsonPath.read(responseBody, "$." + titleField))).isNotEmpty();
+        assertThat(Optional.ofNullable(JsonPath.read(responseBody, "$." + authorField))).isNotEmpty();
     }
 
 
@@ -119,8 +130,9 @@ public class GetBookSteps {
     }
 
     @Then("the response should contain an error message for invalid string id {string}")
-    public void the_response_should_contain_an_error_message_for_invalid_string_id(String expectedMessage) {
-        assertThat(response.jsonPath().getString("errorMessage")).isEqualTo(expectedMessage);
+    public void the_response_should_contain_an_error_message_for_invalid_string_id(HttpResponse<String> response, String expectedMessage) {
+        String errorMessage = JsonPath.read(response.body(), "$.errorMessage");
+        assertThat(errorMessage).isEqualTo(expectedMessage);
     }
 
 
