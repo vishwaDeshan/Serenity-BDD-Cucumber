@@ -13,10 +13,6 @@ import java.net.http.HttpResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-/**
- * PostBookSteps defines the step definitions for Cucumber scenarios
- * related to adding books via the PostBookAPI.
- */
 public class PostBookSteps {
 
     private PostBookAPI postBookAPI = new PostBookAPI();
@@ -39,7 +35,6 @@ public class PostBookSteps {
         String responseBody = response.body();
         JsonNode jsonNode = parseJson(responseBody);
 
-        // Assert that the title and author match
         assertThat(jsonNode.has("title")).isTrue();
         assertThat(jsonNode.get("title").asText()).isEqualTo(title);
 
@@ -50,7 +45,6 @@ public class PostBookSteps {
     // Scenario 2: Add a book with invalid credentials
     @Given("I have invalid username and password")
     public void i_have_invalid_username_and_password() {
-        // Toggle the credentials in PostBookAPI to invalid
         postBookAPI.setInvalidCredentials(true);
     }
 
@@ -71,7 +65,6 @@ public class PostBookSteps {
         String responseBody = response.body();
         JsonNode jsonNode = parseJson(responseBody);
 
-        // Assuming the error message is in a field named "error"
         assertThat(jsonNode.has("error")).isTrue();
         assertThat(jsonNode.get("error").asText()).contains(errorMessage);
     }
@@ -107,10 +100,8 @@ public class PostBookSteps {
         String titleResponse = jsonNode.has("title") ? jsonNode.get("title").asText() : "";
         String authorResponse = jsonNode.has("author") ? jsonNode.get("author").asText() : "";
 
-        // Assert that id is positive (auto-generated)
         assertThat(idResponse).isGreaterThan(0);
 
-        // Assert title and author match
         assertThat(titleResponse).isEqualTo(title);
         assertThat(authorResponse).isEqualTo(author);
     }
@@ -140,10 +131,8 @@ public class PostBookSteps {
         String titleResponse = jsonNode.has("title") ? jsonNode.get("title").asText() : "";
         String authorResponse = jsonNode.has("author") ? jsonNode.get("author").asText() : "";
 
-        // Assert that id matches
         assertThat(idResponse).isEqualTo(id);
 
-        // Assert title and author match
         assertThat(titleResponse).isEqualTo(title);
         assertThat(authorResponse).isEqualTo(author);
     }
@@ -155,7 +144,6 @@ public class PostBookSteps {
         response = postBookAPI.addBookWithoutUser(title, author);
     }
 
-    // Helper method to parse JSON responses
     private JsonNode parseJson(String jsonString) throws IOException {
         return objectMapper.readTree(jsonString);
     }
@@ -163,8 +151,7 @@ public class PostBookSteps {
     // Scenario 10: Add a book with admin
     @Given("I have admin credentials")
     public void i_have_admin_credentials() {
-        // No action needed as admin credentials are handled within PostBookAPI methods
-        // This step is a placeholder for future configurations or setups if required
+        // alredy handled with authentication
     }
 }
 
