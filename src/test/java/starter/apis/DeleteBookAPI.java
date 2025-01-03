@@ -1,8 +1,9 @@
 package starter.apis;
 
-import io.restassured.response.Response;
-
-import static io.restassured.RestAssured.given;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Base64;
 
 public class DeleteBookAPI {
 
@@ -10,62 +11,61 @@ public class DeleteBookAPI {
 
     private String encodeCredentials(String username, String password) {
         String auth = username + ":" + password;
-        return new String(java.util.Base64.getEncoder().encode(auth.getBytes()));
+        return new String(Base64.getEncoder().encode(auth.getBytes()));
     }
 
-    public Response deleteBook(int id) {
+    public int deleteBook(int id) throws IOException {
         String endpoint = "/api/books/" + id;
+        URL url = new URL(BASE_URL + endpoint);
 
-        return given()
-                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))
-                .when()
-                .delete(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Authorization", "Basic " + encodeCredentials("admin", "password"));
+
+        return connection.getResponseCode();
     }
 
-    public Response deleteBookAsUnauthorizedUser(int id) {
+    public int deleteBookInvalidId(int id) throws IOException {
         String endpoint = "/api/books/" + id;
+        URL url = new URL(BASE_URL + endpoint);
 
-        return given()
-                .header("Authorization", "Basic " + encodeCredentials("user", "password"))
-                .when()
-                .delete(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Authorization", "Basic " + encodeCredentials("admin", "password"));
+
+        return connection.getResponseCode();
     }
 
-    public Response deleteNonExistentBook(int id) {
+    public int deleteBookUnauthorized(int id) throws IOException {
         String endpoint = "/api/books/" + id;
+        URL url = new URL(BASE_URL + endpoint);
 
-        return given()
-                .header("Authorization", "Basic " + encodeCredentials("admin", "password"))
-                .when()
-                .delete(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Authorization", "Basic " + encodeCredentials("user", "password"));
+
+        return connection.getResponseCode();
     }
 
-    public Response deleteBookCaseSensitivityCheck(int id) {
+    public int deleteBookCaseSensitiveAdmin(int id) throws IOException {
         String endpoint = "/api/books/" + id;
+        URL url = new URL(BASE_URL + endpoint);
 
-        return given()
-                .header("Authorization", "Basic " + encodeCredentials("Admin", "password"))
-                .when()
-                .delete(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Authorization", "Basic " + encodeCredentials("Admin", "password"));
+
+        return connection.getResponseCode();
     }
 
-    public Response deleteBookUnauthorizedUserCaseSensitivityCheck(int id) {
+    public int deleteBookCaseSensitiveUser(int id) throws IOException {
         String endpoint = "/api/books/" + id;
+        URL url = new URL(BASE_URL + endpoint);
 
-        return given()
-                .header("Authorization", "Basic " + encodeCredentials("User", "password"))
-                .when()
-                .delete(BASE_URL + endpoint)
-                .then()
-                .extract().response();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+        connection.setRequestProperty("Authorization", "Basic " + encodeCredentials("User", "password"));
+
+        return connection.getResponseCode();
     }
 }
-
