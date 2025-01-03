@@ -1,18 +1,19 @@
 package starter.steps;
 
+import actions.NavigationSteps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Assert;
-import actions.NavigationSteps;
+import net.thucydides.core.annotations.Steps;
 
 public class NavigationStepDefinitions {
 
+    @Steps
     NavigationSteps navigationSteps;
 
     @Given("I am on the home page")
-    public void iAmOnTheHomePageNavigation() {
-        navigationSteps.openHomePageWithNavigation();
+    public void iAmOnTheHomePage() {
+        navigationSteps.openHomePage();
     }
 
     @When("I navigate to the Offers Page")
@@ -22,6 +23,6 @@ public class NavigationStepDefinitions {
 
     @Then("I should be redirected to the Offers Page")
     public void iShouldBeRedirectedToTheOffersPage() {
-        Assert.assertTrue("The user should be on the Offers page.", navigationSteps.isOnOffersPage());
+        navigationSteps.verifyOffersPage();
     }
 }
